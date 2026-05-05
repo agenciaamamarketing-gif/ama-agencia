@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMA Agência | Estratégia, Conteúdo e Inteligência Artificial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --mint:    #c8f6fa;
+      --lavender:#b6caed;
+      --sage:    #b9d39f;
+      --sage-lt: #c2e9af;
+      --sage-dk: #8ca183;
+      --dark:    #1a1f2e;
+      --mid:     #3d4560;
+      --muted:   #717a9e;
+      --white:   #ffffff;
+      --offwhite:#f7faf9;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 6vw;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(185,211,159,.18);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,.06); }
+
+    .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -.5px; color: var(--dark); }
+    .logo span { color: var(--sage-dk); }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: .85rem; font-weight: 500; color: var(--mid); transition: color .2s; }
+    .nav-links a:hover { color: var(--sage-dk); }
+
+    .nav-cta {
+      padding: .55rem 1.3rem; border-radius: 50px;
+      background: var(--dark); color: var(--white);
+      font-size: .83rem; font-weight: 600; text-decoration: none;
+      transition: background .25s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--sage-dk); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 8rem 6vw 5rem; position: relative; overflow: hidden;
+    }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .5; }
+    .blob-1 { width: 520px; height: 520px; background: var(--mint);    top: -140px; right: -100px; }
+    .blob-2 { width: 400px; height: 400px; background: var(--lavender); bottom: -80px; right: 18%; }
+    .blob-3 { width: 350px; height: 350px; background: var(--sage-lt); top: 35%; left: -90px; }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 720px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .4rem 1rem; border-radius: 50px;
+      background: rgba(185,211,159,.22); border: 1px solid rgba(140,161,131,.28);
+      font-size: .77rem; font-weight: 600; color: var(--sage-dk);
+      letter-spacing: .05em; text-transform: uppercase; margin-bottom: 1.8rem;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sage-dk); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(1.45)} }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 800; line-height: 1.14; letter-spacing: -1.5px;
+      color: var(--dark); margin-bottom: 1.4rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #8ca183, #6aabaf);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p { font-size: 1.08rem; color: var(--muted); line-height: 1.78; max-width: 560px; margin-bottom: 2.4rem; }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+    .btn-primary {
+      padding: .9rem 2.2rem; border-radius: 50px;
+      background: var(--dark); color: var(--white);
+      font-size: .9rem; font-weight: 700; text-decoration: none;
+      transition: background .25s, transform .2s, box-shadow .25s;
+      box-shadow: 0 6px 25px rgba(26,31,46,.18);
+    }
+    .btn-primary:hover { background: var(--sage-dk); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(140,161,131,.35); }
+
+    .btn-outline {
+      padding: .9rem 2rem; border-radius: 50px;
+      border: 1.5px solid rgba(26,31,46,.16); color: var(--dark);
+      font-size: .9rem; font-weight: 600; text-decoration: none;
+      transition: border-color .25s, color .25s, background .25s;
+    }
+    .btn-outline:hover { border-color: var(--sage-dk); color: var(--sage-dk); background: rgba(185,211,159,.08); }
+
+    .hero-stats { display: flex; gap: 2.5rem; margin-top: 4rem; flex-wrap: wrap; }
+    .stat { display: flex; flex-direction: column; }
+    .stat strong { font-size: 1.7rem; font-weight: 800; color: var(--dark); letter-spacing: -1px; }
+    .stat span { font-size: .8rem; color: var(--muted); font-weight: 500; margin-top: .15rem; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 6rem 6vw; }
+
+    .section-tag {
+      display: inline-block; padding: .3rem .9rem; border-radius: 50px;
+      font-size: .73rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 800; letter-spacing: -1px; line-height: 1.2;
+      color: var(--dark); margin-bottom: 1rem;
+    }
+    .section-sub { font-size: 1rem; color: var(--muted); line-height: 1.72; max-width: 530px; }
+
+    /* ── SERVICES ── */
+    .services { background: var(--offwhite); }
+    .services-head { text-align: center; margin-bottom: 3.5rem; }
+    .services-head .section-sub { margin: 0 auto; }
+    .services-head .section-tag { background: rgba(200,246,250,.45); color: #3a9faa; border: 1px solid rgba(200,246,250,.75); }
+
+    /* 5-card grid: 3 on top, 2 centered below */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+    }
+    .services-grid .card:nth-child(4) { grid-column: 1 / 2; margin-left: calc(50% + .7rem); }
+    .services-grid .card:nth-child(5) { grid-column: 2 / 3; }
+
+    /* Re-center the bottom two cards */
+    .services-row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.4rem;
+      max-width: calc(66.66% + .47rem);
+      margin: 1.4rem auto 0;
+    }
+
+    .card {
+      background: var(--white); border-radius: 20px; padding: 2rem;
+      border: 1px solid rgba(185,211,159,.18);
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px; border-radius: 20px 20px 0 0;
+      background: var(--card-accent, var(--sage));
+      transform: scaleX(0); transform-origin: left; transition: transform .35s;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.08); border-color: transparent; }
+    .card:hover::before { transform: scaleX(1); }
+
+    .card-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 13px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+    }
+    .card-title-block { display: flex; flex-direction: column; }
+    .card-eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: .2rem; opacity: .65; }
+    .card h3 { font-size: 1.05rem; font-weight: 700; color: var(--dark); line-height: 1.25; }
+    .card p  { font-size: .87rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.1rem; }
+
+    .card-features { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .card-features li {
+      display: flex; align-items: flex-start; gap: .55rem;
+      font-size: .82rem; color: var(--mid); line-height: 1.45;
+    }
+    .card-features li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--card-accent, var(--sage)); flex-shrink: 0; margin-top: .38rem;
+    }
+
+    /* Card accent colours */
+    .card-1 { --card-accent: #6aabaf; }
+    .card-1 .card-icon { background: rgba(200,246,250,.4); }
+    .card-1 .card-eyebrow { color: #6aabaf; }
+
+    .card-2 { --card-accent: #8ca183; }
+    .card-2 .card-icon { background: rgba(185,211,159,.3); }
+    .card-2 .card-eyebrow { color: #8ca183; }
+
+    .card-3 { --card-accent: #8aa1cc; }
+    .card-3 .card-icon { background: rgba(182,202,237,.3); }
+    .card-3 .card-eyebrow { color: #8aa1cc; }
+
+    .card-4 { --card-accent: #b8936a; }
+    .card-4 .card-icon { background: rgba(237,212,182,.3); }
+    .card-4 .card-eyebrow { color: #b8936a; }
+
+    .card-5 { --card-accent: #9a82cc; }
+    .card-5 .card-icon { background: rgba(210,195,237,.28); }
+    .card-5 .card-eyebrow { color: #9a82cc; }
+
+    /* ── PROCESS ── */
+    .process-head { margin-bottom: 3.5rem; }
+    .process-head .section-tag { background: rgba(182,202,237,.28); color: #5478b0; border: 1px solid rgba(182,202,237,.55); }
+
+    .process-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.2rem; }
+    .step { background: var(--offwhite); border-radius: 18px; padding: 1.8rem; }
+    .step-num { font-size: 2.4rem; font-weight: 800; color: rgba(26,31,46,.07); line-height: 1; margin-bottom: .75rem; }
+    .step h4 { font-size: .98rem; font-weight: 700; margin-bottom: .45rem; color: var(--dark); }
+    .step p  { font-size: .84rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── RESULTS ── */
+    .results { background: var(--dark); color: var(--white); }
+    .results-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .results-left .section-tag  { background: rgba(185,211,159,.15); color: var(--sage); border: 1px solid rgba(185,211,159,.28); }
+    .results-left .section-title { color: var(--white); }
+    .results-left .section-sub   { color: rgba(255,255,255,.5); }
+
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+    .result-box {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px; padding: 1.7rem 1.5rem; transition: background .25s;
+    }
+    .result-box:hover { background: rgba(255,255,255,.09); }
+    .result-box strong {
+      display: block; font-size: 2rem; font-weight: 800; letter-spacing: -1.5px;
+      line-height: 1; margin-bottom: .35rem;
+      background: linear-gradient(135deg, var(--mint), var(--sage-lt));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .result-box span { font-size: .8rem; color: rgba(255,255,255,.45); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--offwhite); }
+    .testimonials-head { text-align: center; margin-bottom: 3rem; }
+    .testimonials-head .section-tag { background: rgba(185,211,159,.22); color: var(--sage-dk); border: 1px solid rgba(185,211,159,.45); }
+    .testimonials-head .section-sub { margin: 0 auto; }
+
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; }
+    .testi-card { background: var(--white); border-radius: 18px; padding: 2rem; border: 1px solid rgba(185,211,159,.15); }
+    .stars { font-size: 1rem; color: #f5c842; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testi-card blockquote { font-size: .88rem; color: var(--mid); line-height: 1.77; font-style: italic; margin-bottom: 1.3rem; }
+    .testi-author { display: flex; align-items: center; gap: .8rem; }
+    .author-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .88rem; font-weight: 700; color: var(--white);
+    }
+    .author-info strong { font-size: .86rem; font-weight: 700; display: block; color: var(--dark); }
+    .author-info span   { font-size: .77rem; color: var(--muted); }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, #eafaf4 0%, #dff0ff 100%);
+      text-align: center; padding: 7rem 6vw;
+    }
+    .cta-section .section-tag { background: rgba(140,161,131,.14); color: var(--sage-dk); border: 1px solid rgba(140,161,131,.28); }
+    .cta-section .section-title { margin: 0 auto 1rem; }
+    .cta-section .section-sub   { margin: 0 auto 2.5rem; }
+
+    .cta-form { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; max-width: 540px; margin: 0 auto; }
+    .cta-form input {
+      flex: 1; min-width: 200px; padding: .88rem 1.4rem;
+      border: 1.5px solid rgba(26,31,46,.12); border-radius: 50px;
+      font-size: .88rem; font-family: 'Poppins', sans-serif; color: var(--dark);
+      outline: none; transition: border-color .25s; background: var(--white);
+    }
+    .cta-form input:focus { border-color: var(--sage-dk); }
+    .cta-form input::placeholder { color: var(--muted); }
+
+    /* ── CTA CONTACTS ── */
+    .cta-contacts {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-top: 2.2rem;
+      padding: 1.4rem 2rem;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(140,161,131,.2);
+      border-radius: 60px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      backdrop-filter: blur(8px);
+    }
+    .cta-contact-item {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      text-decoration: none;
+      color: var(--dark);
+      font-size: .88rem;
+      font-weight: 600;
+      transition: color .2s;
+    }
+    .cta-contact-item:hover { color: var(--sage-dk); }
+    .contact-icon { font-size: 1rem; }
+    .cta-contact-divider {
+      width: 1px;
+      height: 22px;
+      background: rgba(26,31,46,.12);
+    }
+    @media (max-width: 600px) {
+      .cta-contacts { border-radius: 20px; flex-direction: column; gap: .9rem; }
+      .cta-contact-divider { width: 40px; height: 1px; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,.4);
+      padding: 2.8rem 6vw;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem;
+    }
+    .footer-logo { font-size: 1.2rem; font-weight: 800; color: var(--white); }
+    .footer-logo span { color: var(--sage); }
+    footer p { font-size: .82rem; }
+    .footer-links { display: flex; gap: 1.8rem; list-style: none; }
+    .footer-links a { text-decoration: none; color: rgba(255,255,255,.38); font-size: .82rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--sage); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .services-grid .card:nth-child(4) { grid-column: auto; margin-left: 0; }
+      .services-grid .card:nth-child(5) { grid-column: auto; }
+      .services-row-2 { max-width: 100%; margin-top: 0; grid-template-columns: 1fr 1fr; }
+      .results-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .services-row-2 { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      footer { flex-direction: column; text-align: center; }
+      .results-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up { opacity: 0; transform: translateY(26px); transition: opacity .65s ease, transform .65s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="logo">AMA<span>.</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#resultados">Resultados</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="#contato" class="nav-cta">Falar com especialista</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span>Agência de Marketing Digital</div>
+    <h1>Estratégia, conteúdo e IA<br />para <em>marcas que lideram</em></h1>
+    <p>
+      Da identidade de marca à automação com inteligência artificial — a AMA Agência reúne as cinco competências que sua empresa precisa para crescer com consistência e escala.
+    </p>
+    <div class="hero-actions">
+      <a href="#contato" class="btn-primary">Quero crescer agora</a>
+      <a href="#servicos" class="btn-outline">Ver serviços</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>+50</strong><span>Marcas atendidas</span></div>
+      <div class="stat"><strong>3×</strong><span>ROI médio gerado</span></div>
+      <div class="stat"><strong>98%</strong><span>Taxa de satisfação</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="servicos">
+  <div class="services-head fade-up">
+    <div class="section-tag">O que oferecemos</div>
+    <h2 class="section-title">Cinco pilares para<br />uma marca irresistível</h2>
+    <p class="section-sub">Cobrimos toda a jornada do marketing — do posicionamento à produção, do dado à inteligência artificial.</p>
+  </div>
+
+  <!-- Row 1: 3 cards -->
+  <div class="services-grid">
+    <div class="card card-1 fade-up">
+      <div class="card-header">
+        <div class="card-icon">🎯</div>
+        <div class="card-title-block">
+          <span class="card-eyebrow">Pilar 01</span>
+          <h3>Estratégia e Branding</h3>
+        </div>
+      </div>
+      <p>Construímos a voz, o tom e a autoridade da sua marca — especialmente em mercados B2B — com uma base estratégica sólida.</p>
+      <ul class="card-features">
+        <li>Posicionamento de marca e voz definida</li>
+        <li>Planejamento de campanhas e lançamentos</li>
+        <li>Gestão de identidade visual e diretrizes</li>
+        <li>Cronogramas e fluxos de comunicação</li>
+      </ul>
+    </div>
+
+    <div class="card card-2 fade-up">
+      <div class="card-header">
+        <div class="card-icon">📲</div>
+        <div class="card-title-block">
+          <span class="card-eyebrow">Pilar 02</span>
+          <h3>Gestão de Redes Sociais e Conteúdo</h3>
+        </div>
+      </div>
+      <p>Presença digital que engaja, educa e converte — com foco em retenção e autoridade nas plataformas certas.</p>
+      <ul class="card-features">
+        <li>Conteúdo orgânico para feed e stories</li>
+        <li>Reels e TikTok com hooks de impacto</li>
+        <li>Social Selling e LinkedIn B2B</li>
+        <li>Pílulas de conhecimento e curadoria</li>
+      </ul>
+    </div>
+
+    <div class="card card-3 fade-up">
+      <div class="card-header">
+        <div class="card-icon">📊</div>
+        <div class="card-title-block">
+          <span class="card-eyebrow">Pilar 03</span>
+          <h3>Performance e Growth</h3>
+        </div>
+      </div>
+      <p>Marketing orientado por dados: monitoramos KPIs, gerenciamos tráfego pago e automatizamos o funil para crescimento previsível.</p>
+      <ul class="card-features">
+        <li>Análise de alcance, retenção e conversão</li>
+        <li>Gestão de Google Ads e Meta Ads</li>
+        <li>Automação e CRM (HubSpot e outros)</li>
+        <li>Relatórios com insights estratégicos</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Row 2: 2 cards centered -->
+  <div class="services-row-2">
+    <div class="card card-4 fade-up">
+      <div class="card-header">
+        <div class="card-icon">🎬</div>
+        <div class="card-title-block">
+          <span class="card-eyebrow">Pilar 04</span>
+          <h3>Produção e Edição — Content Studio</h3>
+        </div>
+      </div>
+      <p>Conteúdo produzido com técnica e intenção: vídeos dinâmicos, textos persuasivos e formatos que prendem a atenção até o fim.</p>
+      <ul class="card-features">
+        <li>Edição de vídeo talking head com jump cuts e zooms</li>
+        <li>Copywriting e storytelling para WhatsApp, landing pages e anúncios</li>
+        <li>Carrosséis com analogias e blocos escaneáveis</li>
+        <li>Adaptação de temas técnicos para linguagem acessível</li>
+      </ul>
+    </div>
+
+    <div class="card card-5 fade-up">
+      <div class="card-header">
+        <div class="card-icon">🤖</div>
+        <div class="card-title-block">
+          <span class="card-eyebrow">Pilar 05</span>
+          <h3>Consultoria em Inteligência Artificial</h3>
+        </div>
+      </div>
+      <p>Incorporamos IA ao seu marketing para ganhar velocidade, escala e vantagem competitiva — sem perder a identidade da marca.</p>
+      <ul class="card-features">
+        <li>Otimização de roteiros, imagens e análise de dados com IA</li>
+        <li>Automação de processos de marketing</li>
+        <li>Treinamentos e educação corporativa</li>
+        <li>Frameworks de IA aplicados ao time interno</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="processo">
+  <div class="process-head fade-up">
+    <div class="section-tag">Como trabalhamos</div>
+    <h2 class="section-title">Do diagnóstico<br />à entrega contínua</h2>
+    <p class="section-sub">Um processo claro, transparente e orientado por dados — para que você veja o resultado em cada etapa.</p>
+  </div>
+  <div class="process-steps">
+    <div class="step fade-up">
+      <div class="step-num">01</div>
+      <h4>Diagnóstico</h4>
+      <p>Analisamos sua marca, mercado e concorrência para mapear oportunidades reais de crescimento.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">02</div>
+      <h4>Estratégia</h4>
+      <p>Criamos o plano com metas, canais, formatos e cronograma personalizado para o seu perfil.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">03</div>
+      <h4>Produção</h4>
+      <p>Executamos com qualidade: conteúdo, criativos, vídeos e automações dentro do prazo combinado.</p>
+    </div>
+    <div class="step fade-up">
+      <div class="step-num">04</div>
+      <h4>Otimização</h4>
+      <p>Acompanhamos os dados e ajustamos a rota em tempo real para maximizar cada resultado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results" id="resultados">
+  <div class="results-inner">
+    <div class="results-left fade-up">
+      <div class="section-tag">Nossos números</div>
+      <h2 class="section-title">Resultados que falam por si</h2>
+      <p class="section-sub">Cada cliente é uma história de crescimento. Esses números refletem o impacto real que geramos para as marcas que confiam na AMA Agência.</p>
+    </div>
+    <div class="results-grid fade-up">
+      <div class="result-box"><strong>+200%</strong><span>Crescimento médio em engajamento</span></div>
+      <div class="result-box"><strong>+50</strong><span>Marcas atendidas com sucesso</span></div>
+      <div class="result-box"><strong>3×</strong><span>Retorno sobre investimento</span></div>
+      <div class="result-box"><strong>98%</strong><span>Clientes satisfeitos com a entrega</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-head fade-up">
+    <div class="section-tag">Depoimentos</div>
+    <h2 class="section-title">O que nossos clientes dizem</h2>
+    <p class="section-sub">A melhor prova do nosso trabalho são os resultados das marcas que escolheram a AMA Agência.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card fade-up">
+      <div class="stars">★★★★★</div>
+      <blockquote>"A AMA transformou nossa presença digital por inteiro. Em 3 meses, dobramos o engajamento e aumentamos as vendas pelo Instagram em 80%. O trabalho de branding foi impecável."</blockquote>
+      <div class="testi-author">
+        <div class="author-avatar" style="background: linear-gradient(135deg,#c8f6fa,#6aabaf);">CR</div>
+        <div class="author-info"><strong>Carla Rodrigues</strong><span>CEO, Boutique Essence</span></div>
+      </div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="stars">★★★★★</div>
+      <blockquote>"A consultoria em IA foi um divisor de águas. Hoje automatizamos boa parte do nosso marketing com HubSpot e ganhamos tempo para focar no que realmente importa: o crescimento."</blockquote>
+      <div class="testi-author">
+        <div class="author-avatar" style="background: linear-gradient(135deg,#b6caed,#8aa1cc);">FM</div>
+        <div class="author-info"><strong>Felipe Martins</strong><span>Diretor, TechStart Brasil</span></div>
+      </div>
+    </div>
+    <div class="testi-card fade-up">
+      <div class="stars">★★★★★</div>
+      <blockquote>"Conteúdo de altíssima qualidade, entregue sempre no prazo. Os vídeos talking head que produziram para o meu LinkedIn triplicaram meu alcance orgânico em dois meses."</blockquote>
+      <div class="testi-author">
+        <div class="author-avatar" style="background: linear-gradient(135deg,#c2e9af,#8ca183);">AS</div>
+        <div class="author-info"><strong>Ana Santos</strong><span>Fundadora, Studio AS</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contato">
+  <div class="section-tag fade-up">Vamos conversar</div>
+  <h2 class="section-title fade-up">Pronto para levar<br />sua marca ao próximo nível?</h2>
+  <p class="section-sub fade-up">Deixe seu contato e um especialista da AMA Agência entrará em contato dentro de 24 horas para um diagnóstico gratuito.</p>
+  <form class="cta-form fade-up" onsubmit="handleSubmit(event)">
+    <input type="text"  placeholder="Seu nome" required />
+    <input type="email" placeholder="Seu melhor e-mail" required />
+    <button type="submit" class="btn-primary">Quero meu diagnóstico grátis</button>
+  </form>
+  <p style="margin-top:1.2rem;font-size:.79rem;color:var(--muted);">✓ Sem compromisso &nbsp;·&nbsp; ✓ Resposta em até 24h &nbsp;·&nbsp; ✓ 100% gratuito</p>
+
+  <div class="cta-contacts fade-up">
+    <a href="https://wa.me/5548996106546" class="cta-contact-item" target="_blank">
+      <span class="contact-icon">📱</span>
+      <span>+55 48 99610-6546</span>
+    </a>
+    <div class="cta-contact-divider"></div>
+    <a href="mailto:agencia.amamarketing@gmail.com" class="cta-contact-item">
+      <span class="contact-icon">✉️</span>
+      <span>agencia.amamarketing@gmail.com</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AMA<span>.</span></div>
+  <p>© 2025 AMA Agência. Todos os direitos reservados.</p>
+  <ul class="footer-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Navbar scroll shadow
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Fade-up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 75);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // CTA form feedback
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Mensagem enviada!';
+    btn.style.background = '#8ca183';
+    setTimeout(() => {
+      btn.textContent = 'Quero meu diagnóstico grátis';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
+</script>
+</body>
+</html>
